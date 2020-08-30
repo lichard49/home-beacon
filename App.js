@@ -9,16 +9,45 @@ const Stack = createStackNavigator();
 const HomeScreen = ({ navigation }) => {
   return (
     <Button
-      title="Go to Jane's profile"
+      title="Go to instructions"
       onPress={() =>
-        navigation.navigate('Profile', { name: 'Jane' })
+        navigation.navigate('Instructions')
       }
     />
   );
 };
 
-const ProfileScreen = () => {
-  return <Text>This is Jane's profile</Text>;
+const InstructionsScreen = ({ navigation }) => {
+  return (
+    <View>
+      <Text>Do this do that</Text>
+      <Button
+        title="Go to experiment"
+        onPress={() =>
+          navigation.navigate('Experiment')
+        }
+      />
+    </View>
+  );
+};
+
+const ExperimentScreen = ({ navigation }) => {
+  return (
+    <Button
+      title="Experiment"
+      onPress={() =>
+        navigation.navigate('Exit')
+      }
+    ></Button>
+  );
+};
+
+const ExitScreen = ({ navigation }) => {
+  return (
+    <Button
+      title="Exit"
+    ></Button>
+  );
 };
 
 const HelloWorldApp = () => {
@@ -30,7 +59,9 @@ const HelloWorldApp = () => {
           component={HomeScreen}
           options={{ title: 'Welcome' }}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Instructions" component={InstructionsScreen} />
+        <Stack.Screen name="Experiment" component={ExperimentScreen} />
+        <Stack.Screen name="Exit" component={ExitScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
