@@ -1,19 +1,72 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
+const styles = StyleSheet.create({
+  titleText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginTop: 100
+  },
+  centeredRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 50
+  }
+})
+
+const CodeDigitInput = (props) => {
+  return (
+    <TextInput
+      style={{
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        margin: 10
+      }}
+      keyboardType={'numeric'}
+      maxLength={1}
+    />
+  )
+}
+
 const HomeScreen = ({ navigation }) => {
   return (
-    <Button
-      title="Go to instructions"
-      onPress={() =>
-        navigation.navigate('Instructions')
-      }
-    />
+    <View>
+      <View
+        style={[styles.centeredRow]}
+      >
+        <Text
+          style={[styles.titleText]}
+        >
+          Beacon
+        </Text>
+      </View>
+
+      <View
+        style={[styles.centeredRow]}
+      >
+        <CodeDigitInput />
+        <CodeDigitInput />
+        <CodeDigitInput />
+        <CodeDigitInput />
+      </View>
+
+      <View
+        style={[styles.centeredRow]}
+      >
+        <Button
+          title="Go to instructions"
+          onPress={() =>
+            navigation.navigate('Instructions')
+          }
+        />
+      </View>
+    </View>
   );
 };
 
