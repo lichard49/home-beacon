@@ -73,7 +73,12 @@ const HomeScreen = ({ navigation }) => {
 const InstructionsScreen = ({ navigation }) => {
   return (
     <View>
-      <Text>Do this do that</Text>
+      <Text>{`Instructions:
+1. The Beacon device's light will start to flicker.
+2. The flickering will get faster.
+3. Once you cannot see it flickering anymore, press the button on the screen.
+4. Repeat.`}
+      </Text>
       <Button
         title="Go to experiment"
         onPress={() =>
