@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -91,12 +91,30 @@ const InstructionsScreen = ({ navigation }) => {
 
 const ExperimentScreen = ({ navigation }) => {
   return (
-    <Button
-      title="Experiment"
-      onPress={() =>
-        navigation.navigate('Exit')
-      }
-    ></Button>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          alignItems: "center",
+          backgroundColor: '#DDDDDD',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        }}
+        onPress={() =>
+          navigation.navigate('Exit')
+        }
+      >
+        <Text>Press Here</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
