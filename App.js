@@ -118,10 +118,34 @@ const ExperimentScreen = ({ navigation }) => {
   );
 };
 
+const UploadResults = () => {
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLSeSQAW9zh57QgHesjmz7osiyCASwr0PQX5gjaarIVccXxNckQ/formResponse', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: 'entry.275281492=6969&' +
+      'entry.367726235=5858&' +
+      'entry.1649094572=4747&' +
+      'entry.1667763378=3636&' +
+      'entry.771158055=2525'
+  })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+};
+
 const ExitScreen = ({ navigation }) => {
   return (
     <Button
-      title="Exit"
+      title="Upload Results"
+      onPress={() =>
+        UploadResults()
+      }
     ></Button>
   );
 };
