@@ -3,8 +3,72 @@ import * as React from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { BleManager } from 'react-native-ble-plx';
 
 const Stack = createStackNavigator();
+const ble = new BleManager();
+const subscription = ble.onStateChange((state) => {
+  if (state === 'PoweredOn') {
+    scan();
+    subscription.remove();
+  }
+}, true);
+
+function scan() {
+  console.log('start scanning');
+  ble.startDeviceScan(null, null, (error, device) => {
+    if (error) {
+      // Handle error (scanning will be stopped automatically)
+      return
+    }
+
+    // Check if it is a device you are looking for based on advertisement data
+    // or other criteria.
+    if (device.name === 'Beacon') {
+
+      // Stop scanning as it's not necessary if you are scanning for one device.
+      ble.stopDeviceScan();
+
+      // Proceed with connection.
+      console.log('yay found');
+      connect(device);
+    }
+  });
+}
+
+function hexToBase64(hexstring) {
+    return window.btoa(hexstring.match(/\w{2}/g).map(function(a) {
+        return String.fromCharCode(parseInt(a, 16));
+    }).join(""));
+}
+
+function connect(device) {
+  console.log('connecting...');
+  device.connect()
+    .then((device) => {
+      return device.discoverAllServicesAndCharacteristics();
+    })
+    .then((device) => {
+      // Do work on device with services and characteristics
+      console.log('connected! writing...');
+
+      let data = new Uint16Array(1);
+      data[0] = 20;
+
+      ble.writeCharacteristicWithResponseForDevice(
+        device.id,
+        '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
+        '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
+        hexToBase64('00')
+      );
+
+      console.log('done');
+    })
+    .catch((error) => {
+        // Handle errors
+        console.log(error);
+    });
+}
 
 const styles = StyleSheet.create({
   titleText: {
@@ -16,6 +80,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 50
+  },
+  instructionsText: {
+    margin: 50,
   }
 })
 
@@ -73,18 +140,25 @@ const HomeScreen = ({ navigation }) => {
 const InstructionsScreen = ({ navigation }) => {
   return (
     <View>
-      <Text>{`Instructions:
+      <Text
+        style={[styles.instructionsText]}
+      >{`Instructions:
 1. The Beacon device's light will start to flicker.
 2. The flickering will get faster.
 3. Once you cannot see it flickering anymore, press the button on the screen.
 4. Repeat.`}
       </Text>
-      <Button
-        title="Go to experiment"
-        onPress={() =>
-          navigation.navigate('Experiment')
-        }
-      />
+
+      <View
+        style={[styles.centeredRow]}
+      >
+        <Button
+          title="Go to experiment"
+          onPress={() =>
+            navigation.navigate('Experiment')
+          }
+        />
+      </View>
     </View>
   );
 };
@@ -100,13 +174,14 @@ const ExperimentScreen = ({ navigation }) => {
     >
       <TouchableOpacity
         style={{
-          alignItems: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
           backgroundColor: '#DDDDDD',
           position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
+          top: 10,
+          right: 10,
+          bottom: 10,
+          left: 10
         }}
         onPress={() =>
           navigation.navigate('Exit')
@@ -141,12 +216,16 @@ const UploadResults = () => {
 
 const ExitScreen = ({ navigation }) => {
   return (
-    <Button
-      title="Upload Results"
-      onPress={() =>
-        UploadResults()
-      }
-    ></Button>
+    <View
+      style={[styles.centeredRow]}
+    >
+      <Button
+        title="Upload Results"
+        onPress={() =>
+          UploadResults()
+        }
+      ></Button>
+    </View>
   );
 };
 
