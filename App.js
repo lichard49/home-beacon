@@ -1,40 +1,24 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { FlatList, TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BleManager } from 'react-native-ble-plx';
 
+console.log('hihihihihi???');
+
 const Stack = createStackNavigator();
-const ble = new BleManager();
-const subscription = ble.onStateChange((state) => {
-  if (state === 'PoweredOn') {
-    scan();
-    subscription.remove();
-  }
-}, true);
 
-function scan() {
-  console.log('start scanning');
-  ble.startDeviceScan(null, null, (error, device) => {
-    if (error) {
-      // Handle error (scanning will be stopped automatically)
-      return
-    }
-
-    // Check if it is a device you are looking for based on advertisement data
-    // or other criteria.
-    if (device.name === 'Beacon') {
-
-      // Stop scanning as it's not necessary if you are scanning for one device.
-      ble.stopDeviceScan();
-
-      // Proceed with connection.
-      console.log('yay found');
-      connect(device);
-    }
-  });
-}
+const SIMULATOR = true;
+let ble = null;
+let beaconDevice = null;
+let navigationPointer = null;
+let frequencyCounter = 0;
+let frequencyInterval = null;
+let trialNum = 0;
+const TOTAL_NUM_TRIALS = 4;
+const MIN_FREQUENCY = 250;
+const results = [0, 0, 0, 0];
 
 function connect(device) {
   console.log('connecting...');
@@ -43,30 +27,36 @@ function connect(device) {
       return device.discoverAllServicesAndCharacteristics();
     })
     .then((device) => {
+      beaconDevice = device.id;
+      navigationPointer.navigate('Code')
       // Do work on device with services and characteristics
-      console.log('connected! writing...');
-
-      let value = 250;
-      let data = new Uint8Array(2);
-      data[0] = value & 0xFF;
-      data[1] = (value >> 8) & 0xFF;
-
-      console.log(data);
-      console.log(bytesToBase64(data));
-
-      ble.writeCharacteristicWithResponseForDevice(
-        device.id,
-        '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
-        '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
-        bytesToBase64(data)
-      );
-
-      console.log('done');
+      console.log('connected!');
     })
     .catch((error) => {
         // Handle errors
         console.log(error);
     });
+}
+
+function writeToBeacon(value) {
+  let data = new Uint8Array(2);
+  data[0] = value & 0xFF;
+  data[1] = (value >> 8) & 0xFF;
+
+  console.log('writing:');
+  console.log(data);
+  console.log(bytesToBase64(data));
+
+  if (!SIMULATOR) {
+    ble.writeCharacteristicWithResponseForDevice(
+      beaconDevice,
+      '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
+      '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
+      bytesToBase64(data)
+    );      
+  }
+
+  console.log('done');
 }
 
 const base64abc = [
@@ -110,10 +100,35 @@ const styles = StyleSheet.create({
   centeredRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 50
+    marginTop: 50,
+    padding: 10
+  },
+  instructionsTitle: {
+    marginTop: 60,
+    marginLeft: 35,
+    fontSize: 30
   },
   instructionsText: {
-    margin: 50,
+    marginLeft: 35,
+    marginTop: 35,
+    marginRight: 35
+  },
+  buttonContainer: {
+    borderColor: 'black'
+  },
+  bodyText: {
+    fontSize: 20
+  },
+  textAreaContainer: {
+    width: 350,
+    borderColor: 'gray',
+    borderWidth: 1,
+    padding: 5
+  },
+  textArea: {
+    height: 150,
+    justifyContent: "flex-start",
+    margin: 20
   }
 })
 
@@ -122,6 +137,7 @@ const CodeDigitInput = (props) => {
     <TextInput
       style={{
         height: 40,
+        width: 40,
         borderColor: 'gray',
         borderWidth: 1,
         margin: 10
@@ -132,7 +148,36 @@ const CodeDigitInput = (props) => {
   )
 }
 
-const HomeScreen = ({ navigation }) => {
+const ConnectScreen = ({ navigation }) => {
+  navigationPointer = navigation;
+
+  if (!SIMULATOR) {
+    ble = new BleManager();
+    ble.startDeviceScan(null, null, (error, device) => {
+      if (error) {
+        // Handle error (scanning will be stopped automatically)
+        return
+      }
+
+      // Check if it is a device you are looking for based on advertisement data
+      // or other criteria.
+      if (device.name === 'Beacon') {
+
+        // Stop scanning as it's not necessary if you are scanning for one device.
+        ble.stopDeviceScan();
+
+        // Proceed with connection.
+        console.log('yay found');
+        connect(device);
+      }
+    });
+  } else {
+    // when there's no BLE, just move on
+    setTimeout(() => {
+      navigation.navigate('Code');
+    }, 1000);
+  }
+
   return (
     <View>
       <View
@@ -148,6 +193,30 @@ const HomeScreen = ({ navigation }) => {
       <View
         style={[styles.centeredRow]}
       >
+        <Text style={[styles.bodyText]}>
+          {`Make sure the Beacon device is on and blinking.
+
+The app will start once it has found the device.`}
+          </Text>
+      </View>
+    </View>
+  );
+};
+
+const CodeScreen = ({ navigation }) => {
+  return (
+    <View>
+      <View
+        style={[styles.centeredRow]}
+      >
+        <Text style={[styles.bodyText]}>
+          Enter the code given to you by the study coordinator.
+        </Text>
+      </View>
+
+      <View
+        style={[styles.centeredRow]}
+      >
         <CodeDigitInput />
         <CodeDigitInput />
         <CodeDigitInput />
@@ -155,7 +224,7 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View
-        style={[styles.centeredRow]}
+        style={[styles.centeredRow, styles.buttonContainer]}
       >
         <Button
           title="Go to instructions"
@@ -168,25 +237,45 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
+const list = [
+  'On the next screen, when you press the button, the Beacon device\'s light will turn on.\n',
+  'The light will slowly start flickering (or shimmering).\n',
+  'Once you are certain that the light is flickering (or shimmering) steadily, press the button.\n',
+  'This process will repeat 8 times.\n'
+]
+
+keyExtractor = (item, index) => index.toString()
+
+renderItem = ({ item, index }) => (
+  <View style={{flexDirection:"row"}}>
+    <Text style={[styles.bodyText]}>{ index+1 }. </Text>
+    <Text style={[styles.bodyText]}>{ item }</Text>
+  </View>
+)
+
 const InstructionsScreen = ({ navigation }) => {
   return (
     <View>
       <Text
-        style={[styles.instructionsText]}
-      >{`Instructions:
-1. The Beacon device's light will start to flicker.
-2. The flickering will get faster.
-3. Once you cannot see it flickering anymore, press the button on the screen.
-4. Repeat.`}
+        style={[styles.instructionsTitle]}
+      >
+        Instructions
       </Text>
+
+      <FlatList
+        style={[styles.instructionsText]}
+        keyExtractor={this.keyExtractor}
+        data={list}
+        renderItem={this.renderItem}
+      />
 
       <View
         style={[styles.centeredRow]}
       >
         <Button
-          title="Go to experiment"
+          title="Start taking measurements"
           onPress={() =>
-            navigation.navigate('Experiment')
+            navigation.navigate('Measurement')
           }
         />
       </View>
@@ -194,7 +283,14 @@ const InstructionsScreen = ({ navigation }) => {
   );
 };
 
-const ExperimentScreen = ({ navigation }) => {
+const MeasurementScreen = ({ navigation }) => {
+  frequencyCounter = MIN_FREQUENCY;
+  frequencyInterval = setInterval(() => {
+    console.log('frequency', frequencyCounter);
+    frequencyCounter++;
+    writeToBeacon(frequencyCounter);
+  }, 200);
+
   return (
     <View
       style={{
@@ -214,48 +310,96 @@ const ExperimentScreen = ({ navigation }) => {
           bottom: 10,
           left: 10
         }}
-        onPress={() =>
-          navigation.navigate('Exit')
-        }
+        onPress={() => {
+          writeToBeacon(0);
+
+          console.log('ANSWER IS', frequencyCounter);
+
+          results[trialNum] = frequencyCounter;
+
+          if (frequencyInterval != null) {
+            clearInterval(frequencyInterval);
+          }
+          trialNum++;
+
+          if (trialNum >= TOTAL_NUM_TRIALS) {
+            navigation.navigate('Exit');
+          } else {
+            navigation.push('Measurement');
+          }
+        }}
       >
-        <Text>Press Here</Text>
+        <Text style={[styles.bodyText]}>
+          Press Here
+        </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const UploadResults = () => {
+  console.log('contents:');
+  console.log('entry.275281492="izzy"&' +
+      'entry.367726235="' + results[0] + '"&' +
+      'entry.1649094572="' + results[1] + '"&' +
+      'entry.1667763378="' + results[2] + '"&' +
+      'entry.771158055="' + results[3] + '"');
   fetch('https://docs.google.com/forms/d/e/1FAIpQLSeSQAW9zh57QgHesjmz7osiyCASwr0PQX5gjaarIVccXxNckQ/formResponse', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: 'entry.275281492=6969&' +
-      'entry.367726235=5858&' +
-      'entry.1649094572=4747&' +
-      'entry.1667763378=3636&' +
-      'entry.771158055=2525'
+    body: 'entry.275281492=izzy&' +
+      'entry.367726235=' + results[0] + '&' +
+      'entry.1649094572=' + results[1] + '&' +
+      'entry.1667763378=' + results[2] + '&' +
+      'entry.771158055=' + results[3]
   })
   .then((response) => {
+    console.log('SUCCESS!');
     console.log(response);
   })
   .catch((error) => {
+    console.log('ERROR!');
     console.error(error);
   });
 };
 
 const ExitScreen = ({ navigation }) => {
   return (
-    <View
-      style={[styles.centeredRow]}
-    >
-      <Button
-        title="Upload Results"
-        onPress={() =>
-          UploadResults()
-        }
-      ></Button>
+    <View style={{marginTop: 35}}>
+      <View style={[styles.centeredRow]}>
+        <Text style={[styles.bodyText]}>{`Your measured CFF today is 43.5 Hz.
+
+
+Is there anything else you would like us or yourself to know when look back your measurement from this session?`}
+        </Text>
+      </View>
+
+      <View style={[styles.centeredRow]} >
+        <View style={[styles.textAreaContainer]} >
+          <TextInput
+            style={styles.textArea}
+            underlineColorAndroid="transparent"
+            placeholder="Please explain"
+            placeholderTextColor="grey"
+            numberOfLines={10}
+            multiline={true}
+          />
+        </View>
+      </View>
+
+      <View
+        style={[styles.centeredRow]}
+      >
+        <Button
+          title="Upload Results"
+          onPress={() =>
+            UploadResults()
+          }
+        ></Button>
+      </View>
     </View>
   );
 };
@@ -265,12 +409,13 @@ const HelloWorldApp = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Connect"
+          component={ConnectScreen}
           options={{ title: 'Welcome' }}
         />
+        <Stack.Screen name="Code" component={CodeScreen} />
         <Stack.Screen name="Instructions" component={InstructionsScreen} />
-        <Stack.Screen name="Experiment" component={ExperimentScreen} />
+        <Stack.Screen name="Measurement" component={MeasurementScreen} />
         <Stack.Screen name="Exit" component={ExitScreen} />
       </Stack.Navigator>
     </NavigationContainer>
