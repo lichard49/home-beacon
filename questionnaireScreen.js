@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { TextInput, Button, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { TextInput, Button, Text } from 'react-native-paper';
 
 import styles from './styles.js';
 
@@ -25,19 +26,19 @@ export default class QuestionnaireScreen extends React.Component {
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            title="Yes"
+            mode="outlined"
             style={[styles.textBody]}
             onPress={() => {
               this.setState({shouldShow: true})
             }}
-          />
+          >Yes</Button>
           <Button
-            title="No"
+            mode="outlined"
             style={[styles.textBody]}
             onPress={() =>
               this.props.navigation.navigate('Exit')
             }
-          />
+          >No</Button>
         </View>
         <View>
           {
@@ -56,12 +57,12 @@ export default class QuestionnaireScreen extends React.Component {
                 </View>
                 <View style={[styles.contentRow, styles.contentCenter]}>
                   <Button
-                    title="Submit"
+                    mode="outlined"
                     style={[styles.textBody]}
                     onPress={() =>
                       this.props.navigation.navigate('Exit')
                     }
-                  />
+                  >Submit</Button>
                 </View>
               </View>
             ) : null

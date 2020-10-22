@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { TouchableRipple, Text } from 'react-native-paper';
 
 import styles from './styles.js';
 
@@ -20,7 +21,7 @@ export default class MeasurementScreen extends React.Component {
           justifyContent: 'center',
         }}
       >
-        <TouchableOpacity
+        <TouchableRipple
           style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -31,6 +32,7 @@ export default class MeasurementScreen extends React.Component {
             bottom: 10,
             left: 10
           }}
+          rippleColor="rgba(0, 0, 0, .32)"
           onPress={() => {
             this.props.navigation.push('MeasurementFinished');
           }}
@@ -38,7 +40,7 @@ export default class MeasurementScreen extends React.Component {
           <Text style={[styles.textBody]}>
             Press Here
           </Text>
-        </TouchableOpacity>
+        </TouchableRipple>
       </View>
     );
   }

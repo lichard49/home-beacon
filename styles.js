@@ -1,8 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  appRoot: {
+    backgroundColor: '#FFFFFF'
+  },
   contentRoot: {
-    margin: 50
+    margin: 50,
   },
   contentRow: {
     flexDirection: 'row',

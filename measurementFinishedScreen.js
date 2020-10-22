@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 
 import styles from './styles.js';
 
@@ -25,12 +26,12 @@ export default class MeasurementFinishedScreen extends React.Component {
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            title="Redo step"
+            mode="outlined"
             style={[styles.textBody]}
             onPress={() =>
               this.props.navigation.navigate('Measurement')
             }
-          />
+          >Redo step</Button>
         </View>
         <View style={[styles.contentRow]}>
           <Text style={[styles.textBody]}>
@@ -40,9 +41,7 @@ export default class MeasurementFinishedScreen extends React.Component {
         <View style={[styles.contentRow, styles.contentCenter]}>
 
           <Button
-            title={global.trialNum < global.TOTAL_NUM_TRIALS ?
-              'Start measurement ' + (global.trialNum + 1) : 'Go to next step'
-            }
+            mode="outlined"
             style={[styles.textBody]}
             onPress={() => {
               if (global.trialNum < global.TOTAL_NUM_TRIALS) {
@@ -52,7 +51,10 @@ export default class MeasurementFinishedScreen extends React.Component {
                 this.props.navigation.push('Questionnaire');
               }
             }}
-          />
+          >{
+            global.trialNum < global.TOTAL_NUM_TRIALS ?
+            'Start measurement ' + (global.trialNum + 1) : 'Go to next step'
+          }</Button>
         </View>
       </View>
     );

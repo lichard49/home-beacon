@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TextInput, Button, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text, TextInput, Button } from 'react-native-paper';
 
 import styles from './styles.js';
 
@@ -38,12 +39,12 @@ export default class CodeScreen extends React.Component {
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            title="Go to instructions"
+            mode="outlined"
             style={[styles.textBody]}
             onPress={() =>
               this.props.navigation.navigate('Instructions')
             }
-          />
+          >Go to instructions</Button>
         </View>
       </View>
     );

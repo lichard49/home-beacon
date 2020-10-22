@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { FlatList, Button, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 
 import styles from './styles.js';
 
@@ -40,12 +41,12 @@ export default class InstructionsScreen extends React.Component {
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            title="Start measurement 1"
+            mode="outlined"
             style={[styles.textBody]}
             onPress={() =>
               this.props.navigation.navigate('Measurement')
             }
-          />
+          >Start measurement 1</Button>
         </View>
       </View>
     );

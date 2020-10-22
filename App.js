@@ -4,6 +4,7 @@ import { FlatList, TouchableOpacity, StyleSheet, Text, View, Button, TextInput }
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BleManager } from 'react-native-ble-plx';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import HomeScreen from './homeScreen.js';
 import CodeScreen from './codeScreen.js';
@@ -12,6 +13,8 @@ import MeasurementScreen from './measurementScreen.js';
 import MeasurementFinishedScreen from './measurementFinishedScreen.js';
 import QuestionnaireScreen from './questionnaireScreen.js';
 import ExitScreen from './exitScreen.js';
+
+import styles from './styles.js';
 
 console.log('App starting!');
 
@@ -22,17 +25,19 @@ global.trialNum = 1;
 
 const HelloWorldApp = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Code" component={CodeScreen} />
-        <Stack.Screen name="Instructions" component={InstructionsScreen} />
-        <Stack.Screen name="Measurement" component={MeasurementScreen} />
-        <Stack.Screen name="MeasurementFinished" component={MeasurementFinishedScreen} />
-        <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
-        <Stack.Screen name="Exit" component={ExitScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{cardStyle: {backgroundColor: '#FFFFFF'}}}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Code" component={CodeScreen} />
+          <Stack.Screen name="Instructions" component={InstructionsScreen} />
+          <Stack.Screen name="Measurement" component={MeasurementScreen} />
+          <Stack.Screen name="MeasurementFinished" component={MeasurementFinishedScreen} />
+          <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
+          <Stack.Screen name="Exit" component={ExitScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
