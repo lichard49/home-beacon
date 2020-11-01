@@ -9,7 +9,7 @@ export default class MeasurementScreen extends React.Component {
   render() {
 
     this.props.navigation.setOptions({
-      title: 'Step ' + global.trialNum + ' of ' + global.TOTAL_NUM_TRIALS
+      title: 'Step #' + global.trialNum + ' of ' + global.TOTAL_NUM_TRIALS
     });
 
     return (

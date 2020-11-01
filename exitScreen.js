@@ -12,7 +12,12 @@ export default class ExitScreen extends React.Component {
       <View style={[styles.contentRoot]}>
         <View style={[styles.contentRow]}>
           <Text style={[styles.textBody]}>
-            Your measured CFF today is 43.5 Hz.
+            Your measured CFF today is:
+          </Text>
+        </View>
+        <View style={[styles.contentShortRow, styles.contentCenter]}>
+          <Text style={[styles.textBody, styles.textBold]}>
+            43.5 Hz
           </Text>
         </View>
         <View style={[styles.contentRow]}>
@@ -21,19 +26,11 @@ export default class ExitScreen extends React.Component {
           </Text>
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
-          <TextInput
-            style={{
-              height: 150,
-              width: 300,
-              borderColor: 'gray',
-              borderWidth: 1,
-              margin: 10
-            }}
-          />
+          <TextInput style={[styles.inputBox]} />
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            mode="outlined"
+            mode="contained"
             style={[styles.textBody]}
             onPress={() =>
               this.props.navigation.navigate('Exit')

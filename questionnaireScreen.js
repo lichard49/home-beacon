@@ -1,13 +1,16 @@
 import React, {useState} from 'react';
 import { View } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { RadioButton, TextInput, Button, Text } from 'react-native-paper';
 
 import styles from './styles.js';
 
 export default class QuestionnaireScreen extends React.Component {
 
-  state = {
-    shouldShow: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      selection: null
+    };
   }
 
   render() {
@@ -25,48 +28,49 @@ export default class QuestionnaireScreen extends React.Component {
           </Text>
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
-          <Button
-            mode="outlined"
-            style={[styles.textBody]}
-            onPress={() => {
-              this.setState({shouldShow: true})
-            }}
-          >Yes</Button>
-          <Button
-            mode="outlined"
-            style={[styles.textBody]}
-            onPress={() =>
-              this.props.navigation.navigate('Exit')
-            }
-          >No</Button>
+          <RadioButton.Group
+            value={''}
+            onValueChange={(value) => this.setState({selection: value})}
+          >
+            <View style={[{marginRight: 50}]}>
+              <Text style={[styles.textBody]}>Yes</Text>
+              <RadioButton.Android
+                value="yes"
+                status={this.state.selection == 'yes' ? 'checked' : 'unchecked'}
+              />
+            </View>
+            <View style={[]}>
+              <Text style={[styles.textBody]}>&nbsp;No</Text>
+              <RadioButton.Android
+                value="no"
+                status={this.state.selection == 'no' ? 'checked' : 'unchecked'}
+              />
+            </View>
+          </RadioButton.Group>
         </View>
         <View>
           {
-            this.state.shouldShow ? (
+             this.state.selection == 'yes' ? (
               <View>
-                <View style={[styles.contentRow, styles.contentCenter]}>
-                  <TextInput
-                    style={{
-                      height: 150,
-                      width: 300,
-                      borderColor: 'gray',
-                      borderWidth: 1,
-                      margin: 10
-                    }}
-                  />
+                <View style={[styles.contentShortRow]}>
+                  <Text style={[styles.textBody]}>Please explain:</Text>
                 </View>
-                <View style={[styles.contentRow, styles.contentCenter]}>
-                  <Button
-                    mode="outlined"
-                    style={[styles.textBody]}
-                    onPress={() =>
-                      this.props.navigation.navigate('Exit')
-                    }
-                  >Submit</Button>
+                <View style={[styles.contentCenter, styles.contentShortRow]}>
+                  <TextInput style={[styles.inputBox]} />
                 </View>
               </View>
             ) : null
           }
+          <View style={[styles.contentRow, styles.contentCenter]}>
+            <Button
+              mode="contained"
+              disabled={this.state.selection == null}
+              style={[styles.textBody]}
+              onPress={() =>
+                this.props.navigation.navigate('Exit')
+              }
+            >Submit</Button>
+          </View>
         </View>
       </View>
     );

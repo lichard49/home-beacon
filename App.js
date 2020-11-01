@@ -14,8 +14,6 @@ import MeasurementFinishedScreen from './measurementFinishedScreen.js';
 import QuestionnaireScreen from './questionnaireScreen.js';
 import ExitScreen from './exitScreen.js';
 
-import styles from './styles.js';
-
 console.log('App starting!');
 
 const Stack = createStackNavigator();
@@ -27,7 +25,14 @@ const HelloWorldApp = () => {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{cardStyle: {backgroundColor: '#FFFFFF'}}}>
+        <Stack.Navigator screenOptions={{
+          cardStyle: {
+            backgroundColor: '#FFFFFF'
+          },
+          headerStyle: {
+            backgroundColor: '#FEFEFE'
+          }
+        }}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Code" component={CodeScreen} />
           <Stack.Screen name="Instructions" component={InstructionsScreen} />

@@ -11,6 +11,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     marginTop: 50
   },
+  contentShortRow: {
+    flexDirection: 'row',
+    marginTop: 20
+  },
   contentCenter: {
     justifyContent: 'center'
   },
@@ -23,5 +27,15 @@ export default StyleSheet.create({
   },
   textBody: {
     fontSize: 20
+  },
+  textBold: {
+    fontSize: 25,
+    fontWeight: 'bold'
+  },
+  inputBox: {
+    height: 150,
+    width: 300,
+    borderColor: 'gray',
+    borderWidth: 1
   }
 });

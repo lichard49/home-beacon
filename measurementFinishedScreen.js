@@ -9,7 +9,7 @@ export default class MeasurementFinishedScreen extends React.Component {
   render() {
 
     this.props.navigation.setOptions({
-      title: 'Step ' + global.trialNum + ' of ' + global.TOTAL_NUM_TRIALS
+      title: 'Step #' + global.trialNum + ' of ' + global.TOTAL_NUM_TRIALS
     });
 
     return (
@@ -21,28 +21,13 @@ export default class MeasurementFinishedScreen extends React.Component {
         </View>
         <View style={[styles.contentRow]}>
           <Text style={[styles.textBody]}>
-            If you were distracted or unable to accurately perform this step, you can choose to discard and redo it.
+            If you were distracted or unable to reliably record the measure, you can choose to discard and redo the previous step.
           </Text>
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            mode="outlined"
-            style={[styles.textBody]}
-            onPress={() =>
-              this.props.navigation.navigate('Measurement')
-            }
-          >Redo step</Button>
-        </View>
-        <View style={[styles.contentRow]}>
-          <Text style={[styles.textBody]}>
-            Otherwise, you can move on to the next step.
-          </Text>
-        </View>
-        <View style={[styles.contentRow, styles.contentCenter]}>
-
-          <Button
-            mode="outlined"
-            style={[styles.textBody]}
+            mode="contained"
+            style={[styles.textBody, {backgroundColor: '#00FF00'}]}
             onPress={() => {
               if (global.trialNum < global.TOTAL_NUM_TRIALS) {
                 global.trialNum++;
@@ -53,7 +38,18 @@ export default class MeasurementFinishedScreen extends React.Component {
             }}
           >{
             global.trialNum < global.TOTAL_NUM_TRIALS ?
-            'Start measurement ' + (global.trialNum + 1) : 'Go to next step'
+            'Start step #' + (global.trialNum + 1) : 'Go to next step'
+          }</Button>
+        </View>
+        <View style={[styles.contentRow, styles.contentCenter]}>
+          <Button
+            mode="contained"
+            style={[styles.textBody, {backgroundColor: '#FF0000'}]}
+            onPress={() =>
+              this.props.navigation.navigate('Measurement')
+            }
+          >{
+            'Redo step #' + global.trialNum
           }</Button>
         </View>
       </View>

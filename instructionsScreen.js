@@ -41,12 +41,12 @@ export default class InstructionsScreen extends React.Component {
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            mode="outlined"
+            mode="contained"
             style={[styles.textBody]}
             onPress={() =>
               this.props.navigation.navigate('Measurement')
             }
-          >Start measurement 1</Button>
+          >Start step #1</Button>
         </View>
       </View>
     );

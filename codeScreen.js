@@ -39,7 +39,7 @@ export default class CodeScreen extends React.Component {
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
-            mode="outlined"
+            mode="contained"
             style={[styles.textBody]}
             onPress={() =>
               this.props.navigation.navigate('Instructions')
