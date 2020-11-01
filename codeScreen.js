@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { Text, TextInput, Button } from 'react-native-paper';
+import { Portal, Modal, Text, TextInput, Button } from 'react-native-paper';
 
 import styles from './styles.js';
 
@@ -14,7 +14,9 @@ export default class CodeScreen extends React.Component {
       code1: '',
       code2: '',
       code3: '',
-      codeFinished: false
+      codeFinished: false,
+      loading: false,
+      error: false
     };
   }
 
@@ -74,11 +76,44 @@ export default class CodeScreen extends React.Component {
             mode="contained"
             disabled={!this.state.codeFinished}
             style={[styles.textBody]}
-            onPress={() =>
-              this.props.navigation.navigate('Instructions')
-            }
+            loading={this.state.loading}
+            onPress={() => {
+              const code = this.state.code0 + this.state.code1 + this.state.code2 + this.state.code3;
+              fetch('https://homes.cs.washington.edu/~lichard/beacon/auth/?code=' + code)
+                .then((response) => response.text())
+                .then((text) => {
+                  this.setState({loading: false});
+                  if (text == 'true') {
+                    this.props.navigation.navigate('Instructions');
+                  } else {
+                    this.setState({
+                      code0: '',
+                      code1: '',
+                      code2: '',
+                      code3: '',
+                      error: true
+                    });
+                    this.inputRefs[0].focus();
+                  }
+                });
+              this.setState({loading: true});
+            }}
           >Go to instructions</Button>
         </View>
+        <Portal>
+          <Modal
+            visible={this.state.error}
+            contentContainerStyle={{
+              backgroundColor: 'white',
+              width: '60%',
+              padding: 20,
+              margin: '20%'
+            }}
+            onDismiss={() => this.setState({error: false})}
+          >
+            <Text>Code was invalid. Try again.</Text>
+          </Modal>
+        </Portal>
       </View>
     );
   }
