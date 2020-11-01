@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component {
         <View style={[styles.contentRow]}>
           <Text style={[styles.textBody]}>
             The app will start once it has found the device.
-            Make sure your phone's bluetooth is turned on.
+            Make sure your phone's Bluetooth is turned on.
           </Text>
         </View>
       </View>

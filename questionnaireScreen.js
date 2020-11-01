@@ -13,6 +13,12 @@ export default class QuestionnaireScreen extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      headerLeft: null
+    });
+  }
+
   render() {
 
     return (

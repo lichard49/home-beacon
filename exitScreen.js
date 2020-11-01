@@ -6,6 +6,12 @@ import styles from './styles.js';
 
 export default class ExitScreen extends React.Component {
 
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      headerLeft: null
+    });
+  }
+
   render() {
 
     return (

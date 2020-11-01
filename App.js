@@ -10,7 +10,6 @@ import HomeScreen from './homeScreen.js';
 import CodeScreen from './codeScreen.js';
 import InstructionsScreen from './instructionsScreen.js';
 import MeasurementScreen from './measurementScreen.js';
-import MeasurementFinishedScreen from './measurementFinishedScreen.js';
 import QuestionnaireScreen from './questionnaireScreen.js';
 import ExitScreen from './exitScreen.js';
 
@@ -37,7 +36,6 @@ const HelloWorldApp = () => {
           <Stack.Screen name="Code" component={CodeScreen} />
           <Stack.Screen name="Instructions" component={InstructionsScreen} />
           <Stack.Screen name="Measurement" component={MeasurementScreen} />
-          <Stack.Screen name="MeasurementFinished" component={MeasurementFinishedScreen} />
           <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
           <Stack.Screen name="Exit" component={ExitScreen} />
         </Stack.Navigator>

@@ -5,16 +5,16 @@ import { Button, Text } from 'react-native-paper';
 import styles from './styles.js';
 
 const INSTRUCTIONS_TEXT = [
-  'On the next screen, when you press the button, the Beacon device\'s light will turn on.\n',
-  'The light will slowly start flickering (or shimmering).\n',
-  'Once you are certain that the light is steadily flickering (or shimmering), press the button.\n',
-  'This process will repeat 8 times.\n'
+  'When you start each run, the Beacon device\'s light will turn on.\n',
+  'The light will slowly begin to flicker.\n',
+  'Once you are confident that the light is steadily flickering, press the button.\n',
+  'A measurement consists of 8 runs.\n'
 ];
 
-getIndex = (item, index) => index.toString()
+getIndex = (_, index) => index.toString()
 
 renderRow = ({ item, index }) => (
-  <View style={{flexDirection: "row"}}>
+  <View style={{flexDirection: 'row', width: '95%'}}>
     <Text style={[styles.textBody]}>{ index+1 }. </Text>
     <Text style={[styles.textBody]}>{ item }</Text>
   </View>
@@ -46,7 +46,7 @@ export default class InstructionsScreen extends React.Component {
             onPress={() =>
               this.props.navigation.navigate('Measurement')
             }
-          >Start step #1</Button>
+          >Start run 1 of 8</Button>
         </View>
       </View>
     );
