@@ -8,8 +8,13 @@ export default class MeasurementScreen extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.minHz = 250;   // 25.0 * 10
+    this.maxHz = 550;   // 55.0 * 10
+
     this.state = {
-      finished: false
+      finished: false,
+      seconds: this.minHz
     };
   }
 
@@ -18,6 +23,32 @@ export default class MeasurementScreen extends React.Component {
       title: 'Run ' + global.trialNum + ' of ' + global.TOTAL_NUM_TRIALS,
       headerLeft: null
     });
+
+    this.startRun();
+  }
+
+  startRun() {
+    this.setState({seconds: this.minHz});
+    this.setState({finished: false});
+
+    this.timer = setInterval(() => {
+      if (this.state.seconds == this.maxHz) {
+        this.stopRun();
+      } else {
+        // Bluetooth send this.state.seconds to device
+        this.setState({ seconds: this.state.seconds + 1 });
+      }
+    }, 200);
+  }
+
+  stopRun() {
+    this.setState({finished: true});
+    clearInterval(this.timer);
+  }
+
+  saveRun(valid) {
+    global.runs.push({frequency: this.state.seconds/10, valid: valid});
+    console.log(global.runs);
   }
 
   render() {
@@ -46,9 +77,9 @@ export default class MeasurementScreen extends React.Component {
                   color: '#000000'
                 }}
                 onPress={() =>
-                  this.setState({finished: true})
+                  this.stopRun()
                 }
-              >Press here</Button>
+              >Press here {this.state.seconds}</Button>
             </View>
           ) : (
             <View style={[styles.contentRoot]}>
@@ -67,6 +98,8 @@ export default class MeasurementScreen extends React.Component {
                   mode="contained"
                   style={[styles.textBody, {backgroundColor: '#028A0F'}]}
                   onPress={() => {
+                    this.saveRun(true);
+
                     if (global.trialNum < global.TOTAL_NUM_TRIALS) {
                       global.trialNum++;
                       this.props.navigation.push('Measurement');
@@ -83,9 +116,10 @@ export default class MeasurementScreen extends React.Component {
                 <Button
                   mode="contained"
                   style={[styles.textBody, {backgroundColor: '#FF0000'}]}
-                  onPress={() =>
-                    this.setState({finished: false})
-                  }
+                  onPress={() => {
+                    this.saveRun(false);
+                    this.startRun();
+                  }}
                 >{
                   'Redo run ' + global.trialNum + ' of ' + global.TOTAL_NUM_TRIALS
                 }</Button>

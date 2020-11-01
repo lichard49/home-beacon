@@ -10,7 +10,8 @@ export default class ExitScreen extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      answer: ''
+      answer: '',
+      cff: 0
     };
   }
 
@@ -18,6 +19,17 @@ export default class ExitScreen extends React.Component {
     this.props.navigation.setOptions({
       headerLeft: null,
     });
+
+    let averageRun = 0;
+    let numValid = 0;
+    for (let i = 0; i < global.runs.length; i++) {
+      if (global.runs[i].valid) {
+        averageRun += global.runs[i].frequency;
+        numValid++;
+      }
+    }
+    averageRun /= numValid;
+    this.setState({cff: averageRun});
   }
 
   render() {
@@ -31,7 +43,7 @@ export default class ExitScreen extends React.Component {
         </View>
         <View style={[styles.contentShortRow, styles.contentCenter]}>
           <Text style={[styles.textBody, styles.textBold]}>
-            43.5 Hz
+            {this.state.cff.toFixed(2)} Hz
           </Text>
         </View>
         <View style={[styles.contentRow]}>
@@ -53,7 +65,8 @@ export default class ExitScreen extends React.Component {
             onPress={() => {
               const payload = JSON.stringify({
                 time: Date.now(),
-                question3: this.state.answer
+                question3: this.state.answer,
+                runs: global.runs
               });
               fetch('https://homes.cs.washington.edu/~lichard/beacon/log/?user=' + global.user + '&data=' + payload)
                 .then((response) => response.text())
