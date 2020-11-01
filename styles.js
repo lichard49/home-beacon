@@ -5,22 +5,23 @@ export default StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   contentRoot: {
-    margin: 50,
+    marginLeft: 20,
+    marginRight: 20
   },
   contentRow: {
     flexDirection: 'row',
-    marginTop: 50
+    marginTop: 20
   },
   contentShortRow: {
     flexDirection: 'row',
-    marginTop: 20
+    marginTop: 10
   },
   contentCenter: {
     justifyContent: 'center'
   },
   textTitle: {
     fontSize: 50,
-    marginTop: 50
+    marginTop: 0
   },
   textSubtitle: {
     fontSize: 35
@@ -33,7 +34,7 @@ export default StyleSheet.create({
     fontWeight: 'bold'
   },
   inputBox: {
-    height: 150,
+    height: 70,
     width: 300,
     borderColor: 'gray',
     borderWidth: 1

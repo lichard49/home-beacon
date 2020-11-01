@@ -206,7 +206,6 @@
 			children = (
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -793,7 +792,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.uw.Beacon;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.uw.BeaconApp;
 				PRODUCT_NAME = Beacon;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -816,7 +815,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = edu.uw.Beacon;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.uw.BeaconApp;
 				PRODUCT_NAME = Beacon;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
