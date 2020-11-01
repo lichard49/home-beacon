@@ -9,7 +9,9 @@ export default class QuestionnaireScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selection: null
+      selection: null,
+      loading: false,
+      answer: ''
     };
   }
 
@@ -62,7 +64,10 @@ export default class QuestionnaireScreen extends React.Component {
                   <Text style={[styles.textBody]}>Please explain:</Text>
                 </View>
                 <View style={[styles.contentCenter, styles.contentShortRow]}>
-                  <TextInput style={[styles.inputBox]} />
+                  <TextInput
+                    style={[styles.inputBox]}
+                    onChangeText={text => this.setState({answer: text})}
+                  />
                 </View>
               </View>
             ) : null
@@ -72,9 +77,21 @@ export default class QuestionnaireScreen extends React.Component {
               mode="contained"
               disabled={this.state.selection == null}
               style={[styles.textBody]}
-              onPress={() =>
-                this.props.navigation.navigate('Exit')
-              }
+              loading={this.state.loading}
+              onPress={() => {
+                const payload = JSON.stringify({
+                  time: Date.now(),
+                  question1: this.state.selection,
+                  question2: this.state.answer
+                });
+                fetch('https://homes.cs.washington.edu/~lichard/beacon/log/?user=' + global.user + '&data=' + payload)
+                  .then((response) => response.text())
+                  .then(() => {
+                    this.setState({loading: false});
+                    this.props.navigation.navigate('Exit');
+                  });
+                this.setState({loading: true});
+              }}
             >Submit</Button>
           </View>
         </View>

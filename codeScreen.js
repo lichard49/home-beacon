@@ -78,8 +78,8 @@ export default class CodeScreen extends React.Component {
             style={[styles.textBody]}
             loading={this.state.loading}
             onPress={() => {
-              const code = this.state.code0 + this.state.code1 + this.state.code2 + this.state.code3;
-              fetch('https://homes.cs.washington.edu/~lichard/beacon/auth/?code=' + code)
+              global.user = this.state.code0 + this.state.code1 + this.state.code2 + this.state.code3;
+              fetch('https://homes.cs.washington.edu/~lichard/beacon/auth/?code=' + global.user)
                 .then((response) => response.text())
                 .then((text) => {
                   this.setState({loading: false});

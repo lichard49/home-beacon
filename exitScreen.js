@@ -6,9 +6,17 @@ import styles from './styles.js';
 
 export default class ExitScreen extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      answer: ''
+    };
+  }
+
   componentDidMount() {
     this.props.navigation.setOptions({
-      headerLeft: null
+      headerLeft: null,
     });
   }
 
@@ -32,15 +40,29 @@ export default class ExitScreen extends React.Component {
           </Text>
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
-          <TextInput style={[styles.inputBox]} />
+          <TextInput
+            style={[styles.inputBox]}
+            onChangeText={text => this.setState({answer: text})}
+          />
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
           <Button
             mode="contained"
             style={[styles.textBody]}
-            onPress={() =>
-              this.props.navigation.navigate('Exit')
-            }
+            loading={this.state.loading}
+            onPress={() => {
+              const payload = JSON.stringify({
+                time: Date.now(),
+                question3: this.state.answer
+              });
+              fetch('https://homes.cs.washington.edu/~lichard/beacon/log/?user=' + global.user + '&data=' + payload)
+                .then((response) => response.text())
+                .then(() => {
+                  this.setState({loading: false});
+                  // quit
+                });
+              this.setState({loading: true});
+            }}
           >Upload Results</Button>
         </View>
       </View>

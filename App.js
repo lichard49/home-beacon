@@ -19,6 +19,7 @@ const Stack = createStackNavigator();
 
 global.TOTAL_NUM_TRIALS = 8;
 global.trialNum = 1;
+global.user = null;
 
 const HelloWorldApp = () => {
   return (
