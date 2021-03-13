@@ -4,6 +4,19 @@ import { Portal, Modal, Text, TextInput, Button } from 'react-native-paper';
 
 import styles from './styles.js';
 
+const USER_ID_AUTH_ENDPOINT = 'https://homes.cs.washington.edu/~lichard/' +
+  'beacon/auth/?code=';
+
+const OFFLINE_DEV_USER_ID = '8888';
+const OFFLINE_DEV_DEVICE_ID = null;
+const OFFLINE_DEV_PROTOCOL = 'descending_only';
+const OFFLINE_DEV_PROTOCOL_SETTINGS = {
+  numTrials: 2,
+  frequencyStart: 550,   // frequency in Hz * 10
+  frequencyStop: 250,   // frequency in Hz * 10
+  frequencyStep: 10   // frequency step in Hz/100 ms
+};
+
 export default class LoginScreen extends React.Component {
   
   constructor (props) {
@@ -43,6 +56,46 @@ export default class LoginScreen extends React.Component {
     } else {
       this.setState({[`code${index}`]: ''});
     }
+  }
+
+  validateUserId() {
+    let userIdToTest = this.state.code0 + this.state.code1 +
+      this.state.code2 + this.state.code3;
+
+    if (userIdToTest === OFFLINE_DEV_USER_ID) {
+      this.populateSessionSettings(OFFLINE_DEV_USER_ID, OFFLINE_DEV_DEVICE_ID,
+        OFFLINE_DEV_PROTOCOL, OFFLINE_DEV_PROTOCOL_SETTINGS);
+      this.nextScreen();
+    } else {
+      fetch(USER_ID_AUTH_ENDPOINT + userIdToTest)
+        .then((response) => response.text())
+        .then((text) => {
+          if (text == 'true') {
+            this.nextScreen();
+          } else {
+            this.setState({
+              code0: '',
+              code1: '',
+              code2: '',
+              code3: '',
+              error: true
+            });
+            this.inputRefs[0].focus();
+          }
+        });
+    }
+  }
+
+  nextScreen() {
+    this.setState({loading: false});
+    this.props.navigation.navigate('Home');
+  }
+
+  populateSessionSettings(userId, deviceId, protocol, protocolSettings) {
+    global.sessionSettings.userId = userId;
+    global.sessionSettings.deviceId = deviceId;
+    global.sessionSettings.protocol = protocol;
+    global.sessionSettings.protocolSettings = protocolSettings;
   }
 
   render() {
@@ -85,24 +138,7 @@ export default class LoginScreen extends React.Component {
               style={[styles.textBody]}
               loading={this.state.loading}
               onPress={() => {
-                global.user = this.state.code0 + this.state.code1 + this.state.code2 + this.state.code3;
-                fetch('https://homes.cs.washington.edu/~lichard/beacon/auth/?code=' + global.user)
-                  .then((response) => response.text())
-                  .then((text) => {
-                    this.setState({loading: false});
-                    if (text == 'true') {
-                      this.props.navigation.navigate('Instructions');
-                    } else {
-                      this.setState({
-                        code0: '',
-                        code1: '',
-                        code2: '',
-                        code3: '',
-                        error: true
-                      });
-                      this.inputRefs[0].focus();
-                    }
-                  });
+                this.validateUserId();
                 this.setState({loading: true});
               }}
             >Go to instructions</Button>

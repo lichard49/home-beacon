@@ -75,6 +75,13 @@ global.bytesToBase64 = function (bytes) {
   return result;
 }
 
+global.sessionSettings = {
+  userId: null,
+  deviceId: null,
+  protocol: null,
+  protocolSettings: {}
+};
+
 const HelloWorldApp = () => {
   return (
     <PaperProvider>
