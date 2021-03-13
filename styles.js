@@ -6,7 +6,8 @@ export default StyleSheet.create({
   },
   contentRoot: {
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
+    marginBottom: 20
   },
   contentRow: {
     flexDirection: 'row',

@@ -4,7 +4,7 @@ import { Portal, Modal, Text, TextInput, Button } from 'react-native-paper';
 
 import styles from './styles.js';
 
-export default class CodeScreen extends React.Component {
+export default class LoginScreen extends React.Component {
   
   constructor (props) {
     super(props);

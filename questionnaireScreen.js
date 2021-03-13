@@ -134,6 +134,13 @@ export default class QuestionnaireScreen extends React.Component {
                   this.setState({loading: true});
                 }}
               >Submit</Button>
+              <Button
+                mode="contained"
+                style={[styles.textBody, {marginLeft: 5}]}
+                loading={this.state.loading}
+                onPress={() => {
+                }}
+              >Discard</Button>
             </View>
           </View>
         </ScrollView>

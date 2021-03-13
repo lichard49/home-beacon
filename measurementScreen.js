@@ -14,7 +14,7 @@ export default class MeasurementScreen extends React.Component {
 
     this.state = {
       finished: false,
-      seconds: this.minHz
+      seconds: this.maxHz
     };
   }
 
@@ -28,22 +28,28 @@ export default class MeasurementScreen extends React.Component {
   }
 
   startRun() {
-    this.setState({seconds: this.minHz});
+    this.setState({seconds: this.maxHz});
     this.setState({finished: false});
 
+    global.writeBeacon(0);
+
     this.timer = setInterval(() => {
-      if (this.state.seconds == this.maxHz) {
+      if (this.state.seconds == this.minHz) {
         this.stopRun();
       } else {
         // Bluetooth send this.state.seconds to device
-        this.setState({ seconds: this.state.seconds + 1 });
+        global.writeBeacon(this.state.seconds);
+
+        // decrease 0.1 Hz every 100 ms
+        this.setState({seconds: this.state.seconds - 0.5});
       }
-    }, 200);
+    }, 100);
   }
 
   stopRun() {
     this.setState({finished: true});
     clearInterval(this.timer);
+    global.writeBeacon(0);
   }
 
   saveRun(valid) {
@@ -79,7 +85,7 @@ export default class MeasurementScreen extends React.Component {
                 onPress={() =>
                   this.stopRun()
                 }
-              >Press here {this.state.seconds}</Button>
+              >Press here</Button>
             </View>
           ) : (
             <View style={[styles.contentRoot]}>
