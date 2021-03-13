@@ -12,7 +12,6 @@ import InstructionsScreen from './instructionsScreen.js';
 import MeasurementScreen from './measurementScreen.js';
 import ForcedMeasurementScreen from './forcedMeasurementScreen.js';
 import QuestionnaireScreen from './questionnaireScreen.js';
-import QuestionnaireScreen2 from './questionnaireScreen2.js';
 import ExitScreen from './exitScreen.js';
 
 console.log('App starting!');
@@ -88,8 +87,8 @@ const HelloWorldApp = () => {
             backgroundColor: '#FEFEFE'
           }
         }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Instructions" component={InstructionsScreen} />
           <Stack.Screen name="Measurement" component={MeasurementScreen} />
           <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />

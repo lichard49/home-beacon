@@ -50,6 +50,11 @@ export default class LoginScreen extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={[styles.contentRoot]}>
+          <View style={[styles.contentRow, styles.contentCenter]}>
+            <Text style={[styles.textTitle]}>
+              Beacon
+            </Text>
+          </View>
           <View style={[styles.contentRow]}>
             <Text style={[styles.textBody]}>
               Enter the code given to you by the study coordinator.

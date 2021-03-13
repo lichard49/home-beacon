@@ -68,11 +68,6 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={[styles.contentRoot]}>
-        <View style={[styles.contentRow, styles.contentCenter]}>
-          <Text style={[styles.textTitle]}>
-            Beacon
-          </Text>
-        </View>
         <View style={[styles.contentRow]}>
           <Text style={[styles.textBody]}>
             Make sure the Beacon device is on and blinking.
