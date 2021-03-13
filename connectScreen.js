@@ -30,8 +30,7 @@ export default class HomeScreen extends React.Component {
 
       // Check if it is a device you are looking for based on advertisement data
       // or other criteria.
-      // if (device.name === 'Beacon2') {
-        if (device != null && device.name != null && device.name.includes('Beacon')) {
+      if (device.name === global.sessionSettings.deviceId) {
 
           // Stop scanning as it's not necessary if you are scanning for one device.
           global.manager.stopDeviceScan();
@@ -39,7 +38,7 @@ export default class HomeScreen extends React.Component {
           // Proceed with connection.
           device.connect()
             .then((device) => {
-                return device.discoverAllServicesAndCharacteristics()
+              return device.discoverAllServicesAndCharacteristics()
             })
             .then((device) => {
               // Do work on device with services and characteristics
@@ -50,21 +49,26 @@ export default class HomeScreen extends React.Component {
 
               console.log('done');
 
-              this.props.navigation.navigate('Code');
+              this.nextPage();
             })
             .catch((error) => {
-                // Handle errors
-                console.log(error);
+              // Handle errors
+              console.log(error);
             });
       }
     });
   }
 
-  render(props) {
+  nextPage() {
+    this.props.navigation.navigate('Instructions');
+  }
 
-    setTimeout(() => {
-      this.props.navigation.navigate('Code');
-    }, 1000);
+  render(props) {
+    if (global.sessionSettings.deviceId == null) {
+      setTimeout(() => {
+        this.nextPage();
+      }, 1000);
+    }
 
     return (
       <View style={[styles.contentRoot]}>

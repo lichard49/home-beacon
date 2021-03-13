@@ -88,7 +88,7 @@ export default class LoginScreen extends React.Component {
 
   nextScreen() {
     this.setState({loading: false});
-    this.props.navigation.navigate('Home');
+    this.props.navigation.navigate('Connect');
   }
 
   populateSessionSettings(userId, deviceId, protocol, protocolSettings) {

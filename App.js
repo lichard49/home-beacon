@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { BleManager } from 'react-native-ble-plx';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import HomeScreen from './homeScreen.js';
+import ConnectScreen from './connectScreen.js';
 import LoginScreen from './loginScreen.js';
 import InstructionsScreen from './instructionsScreen.js';
 import MeasurementScreen from './measurementScreen.js';
@@ -95,7 +95,7 @@ const HelloWorldApp = () => {
           }
         }}>
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Connect" component={ConnectScreen} />
           <Stack.Screen name="Instructions" component={InstructionsScreen} />
           <Stack.Screen name="Measurement" component={MeasurementScreen} />
           <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
