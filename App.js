@@ -34,21 +34,21 @@ global.base64abc = [
 ];
 
 global.writeBeacon = function (value) {
-  // let value = 250;
-  let data = new Uint8Array(2);
-  data[0] = (value >> 8) & 0xFF;
-  data[1] = value & 0xFF;
+  if (global.sessionSettings.deviceId != null) {
+    let data = new Uint8Array(2);
+    data[0] = (value >> 8) & 0xFF;
+    data[1] = value & 0xFF;
 
-  console.log('raw data', data);
-  console.log('formatted data', bytesToBase64(data));
+    console.log('raw data', data);
+    console.log('formatted data', bytesToBase64(data));
 
-  global.manager.writeCharacteristicWithResponseForDevice(
-    global.device.id,
-    '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
-    '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
-    global.bytesToBase64(data)
-  );
-
+    global.manager.writeCharacteristicWithResponseForDevice(
+      global.device.id,
+      '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
+      '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
+      global.bytesToBase64(data)
+    );
+  }
 }
 
 global.bytesToBase64 = function (bytes) {

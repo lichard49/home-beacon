@@ -14,7 +14,7 @@ const OFFLINE_DEV_PROTOCOL_SETTINGS = {
   numTrials: 2,
   frequencyStart: 550,   // frequency in Hz * 10
   frequencyStop: 250,   // frequency in Hz * 10
-  frequencyStep: 10   // frequency step in Hz/100 ms
+  frequencyStep: 0.5   // frequency step in Hz/100 ms
 };
 
 export default class LoginScreen extends React.Component {
