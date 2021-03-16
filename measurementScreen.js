@@ -13,7 +13,8 @@ export default class MeasurementScreen extends React.Component {
 
     this.state = {
       finished: false,
-      finalFrequency: null
+      finalFrequency: null,
+      optionalData: null
     };
 
     this.stopRun = this.stopRun.bind(this);
@@ -30,15 +31,20 @@ export default class MeasurementScreen extends React.Component {
     this.setState({finished: false})
   }
 
-  stopRun(finalFrequency) {
+  stopRun(finalFrequency, optionalData=null) {
     this.setState({
       finished: true,
-      finalFrequency: finalFrequency
+      finalFrequency: finalFrequency,
+      optionalData: optionalData
     });
   }
 
   saveRun(valid) {
-    global.runs.push({frequency: this.state.finalFrequency, valid: valid});
+    global.runs.push({
+      frequency: this.state.finalFrequency,
+      optionalData: this.state.optionalData,
+      valid: valid
+    });
     console.log(global.runs);
   }
 
