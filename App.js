@@ -10,7 +10,6 @@ import ConnectScreen from './connectScreen.js';
 import LoginScreen from './loginScreen.js';
 import InstructionsScreen from './instructionsScreen.js';
 import MeasurementScreen from './measurementScreen.js';
-import ForcedMeasurementScreen from './forcedMeasurementScreen.js';
 import QuestionnaireScreen from './questionnaireScreen.js';
 import ExitScreen from './exitScreen.js';
 

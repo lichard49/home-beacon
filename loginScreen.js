@@ -9,7 +9,7 @@ const USER_ID_AUTH_ENDPOINT = 'https://homes.cs.washington.edu/~lichard/' +
 
 const OFFLINE_DEV_USER_ID = '8888';
 const OFFLINE_DEV_DEVICE_ID = null;
-const OFFLINE_DEV_PROTOCOL = 'descending_only';
+const OFFLINE_DEV_PROTOCOL = 'forced_choice';
 const OFFLINE_DEV_PROTOCOL_SETTINGS = {
   numTrials: 2,
   frequencyStart: 550,   // frequency in Hz * 10
