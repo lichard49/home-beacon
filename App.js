@@ -77,6 +77,7 @@ global.bytesToBase64 = function (bytes) {
 global.sessionSettings = {
   userId: null,
   deviceId: null,
+  numTrials: null,
   protocol: null,
   protocolSettings: {}
 };

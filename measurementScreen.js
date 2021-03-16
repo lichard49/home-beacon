@@ -22,7 +22,7 @@ export default class MeasurementScreen extends React.Component {
 
   componentDidMount() {
     this.props.navigation.setOptions({
-      title: 'Run ' + global.trialNum + ' of ' + global.sessionSettings.protocolSettings.numTrials,
+      title: 'Run ' + global.trialNum + ' of ' + global.sessionSettings.numTrials,
       headerLeft: null
     });
   }
@@ -62,7 +62,7 @@ export default class MeasurementScreen extends React.Component {
       screenContents = <View style={[styles.contentRoot]}>
         <View style={[styles.contentRow]}>
           <Text style={[styles.textBody]}>
-            You just completed step {global.trialNum} of {global.TOTAL_NUM_TRIALS} for today's measure.
+            You just completed step {global.trialNum} of {global.sessionSettings.numTrials} for today's measure.
           </Text>
         </View>
         <View style={[styles.contentRow]}>
@@ -77,7 +77,7 @@ export default class MeasurementScreen extends React.Component {
             onPress={() => {
               this.saveRun(true);
 
-              if (global.trialNum < global.TOTAL_NUM_TRIALS) {
+              if (global.trialNum < global.sessionSettings.numTrials) {
                 global.trialNum++;
                 this.props.navigation.push('Measurement');
               } else {
@@ -85,8 +85,8 @@ export default class MeasurementScreen extends React.Component {
               }
             }}
           >{
-            global.trialNum < global.TOTAL_NUM_TRIALS ?
-            'Start run ' + (global.trialNum + 1) + ' of ' + global.TOTAL_NUM_TRIALS : 'Go to next step'
+            global.trialNum < global.sessionSettings.numTrials ?
+            'Start run ' + (global.trialNum + 1) + ' of ' + global.sessionSettings.numTrials : 'Go to next step'
           }</Button>
         </View>
         <View style={[styles.contentRow, styles.contentCenter]}>
@@ -98,7 +98,7 @@ export default class MeasurementScreen extends React.Component {
               this.startRun();
             }}
           >{
-            'Redo run ' + global.trialNum + ' of ' + global.TOTAL_NUM_TRIALS
+            'Redo run ' + global.trialNum + ' of ' + global.sessionSettings.numTrials
           }</Button>
         </View>
       </View>;

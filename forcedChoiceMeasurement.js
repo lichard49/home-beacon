@@ -5,20 +5,18 @@ import { Button, Text } from 'react-native-paper';
 import styles from './styles.js';
 
 const NON_FLICKERING_FREQUENCY = 1200;   // frequency in Hz * 10
-const STARTING_FREQUENCY = 250;
-const NUM_IN_A_ROW_CORRECT = 3;   // 3 in a row correct --> increment frequency
+                                         // too fast to see
 const FREQUENCY_INCREMENT = 20;
 const DIRECTION_UP = 1;
 const DIRECTION_DOWN = -1;
-const NUM_REVERSALS_TO_FINISH = 8;
-const NUM_REVERSALS_TO_USE = 6;
 
 export default class ForcedChoiceMeasurement extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.currentFrequency = STARTING_FREQUENCY;
+    this.currentFrequency =
+      global.sessionSettings.protocolSettings.frequencyStart;
     this.selectedFrequencies = [];
     this.choice1 = 0;
     this.choice2 = 0;
@@ -79,7 +77,9 @@ export default class ForcedChoiceMeasurement extends React.Component {
 
     if (choice == this.correctChoice) {
       this.numCorrect++;
-      if (this.numCorrect >= NUM_IN_A_ROW_CORRECT) {
+      if (this.numCorrect >=
+        global.sessionSettings.protocolSettings.numInARowCorrect) {
+
         if (this.prevDirection == DIRECTION_DOWN) {
           this.numReversals++;
           this.reversalFrequencies.push(this.currentFrequency);
@@ -100,13 +100,22 @@ export default class ForcedChoiceMeasurement extends React.Component {
       this.currentFrequency -= FREQUENCY_INCREMENT;
     }
 
-    if (this.numReversals == NUM_REVERSALS_TO_FINISH) {
+    console.log('num correct:', this.numCorrect, 'num reversals',
+      this.numReversals);
+
+    if (this.numReversals ==
+      global.sessionSettings.protocolSettings.numReversalsToFinish) {
+
       let averageFrequency = 0;
-      for (let index = 0; index < NUM_REVERSALS_TO_USE; index++) {
+      for (let index = 0; index <
+        global.sessionSettings.protocolSettings.numReversalsToUse; index++) {
+
         averageFrequency +=
           this.reversalFrequencies[this.reversalFrequencies.length - index - 1];
       }
-      averageFrequency /= NUM_REVERSALS_TO_USE;
+      averageFrequency /=
+        global.sessionSettings.protocolSettings.numReversalsToUse;
+
       this.props.onStop(averageFrequency, this.selectedFrequencies);
     } else {
       this.startRun();

@@ -5,13 +5,13 @@ import { Portal, Modal, Text, TextInput, Button } from 'react-native-paper';
 import styles from './styles.js';
 
 const USER_ID_AUTH_ENDPOINT = 'https://homes.cs.washington.edu/~lichard/' +
-  'beacon/auth/?code=';
+  'beacon/config/?user=';
 
 const OFFLINE_DEV_USER_ID = '8888';
 const OFFLINE_DEV_DEVICE_ID = null;
 const OFFLINE_DEV_PROTOCOL = 'forced_choice';
+const OFFLINE_DEV_NUM_TRIALS = 2;
 const OFFLINE_DEV_PROTOCOL_SETTINGS = {
-  numTrials: 2,
   frequencyStart: 550,   // frequency in Hz * 10
   frequencyStop: 250,   // frequency in Hz * 10
   frequencyStep: 0.5   // frequency step in Hz/100 ms
@@ -64,15 +64,14 @@ export default class LoginScreen extends React.Component {
 
     if (userIdToTest === OFFLINE_DEV_USER_ID) {
       this.populateSessionSettings(OFFLINE_DEV_USER_ID, OFFLINE_DEV_DEVICE_ID,
-        OFFLINE_DEV_PROTOCOL, OFFLINE_DEV_PROTOCOL_SETTINGS);
+        OFFLINE_DEV_NUM_TRIALS, OFFLINE_DEV_PROTOCOL,
+        OFFLINE_DEV_PROTOCOL_SETTINGS);
       this.nextScreen();
     } else {
       fetch(USER_ID_AUTH_ENDPOINT + userIdToTest)
         .then((response) => response.text())
         .then((text) => {
-          if (text == 'true') {
-            this.nextScreen();
-          } else {
+          if (text == '-1') {
             this.setState({
               code0: '',
               code1: '',
@@ -81,6 +80,12 @@ export default class LoginScreen extends React.Component {
               error: true
             });
             this.inputRefs[0].focus();
+          } else {
+            let config = JSON.parse(text);
+            this.populateSessionSettings(config.id,
+              config.device == false ? null : config.device,
+              config.numTrials, config.protocol, config.protocol_settings);
+            this.nextScreen();
           }
         });
     }
@@ -91,11 +96,16 @@ export default class LoginScreen extends React.Component {
     this.props.navigation.navigate('Connect');
   }
 
-  populateSessionSettings(userId, deviceId, protocol, protocolSettings) {
+  populateSessionSettings(userId, deviceId, numTrials, protocol,
+    protocolSettings) {
+
     global.sessionSettings.userId = userId;
     global.sessionSettings.deviceId = deviceId;
+    global.sessionSettings.numTrials = numTrials;
     global.sessionSettings.protocol = protocol;
     global.sessionSettings.protocolSettings = protocolSettings;
+
+    console.log('session settings', global.sessionSettings);
   }
 
   render() {
