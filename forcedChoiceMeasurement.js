@@ -10,24 +10,39 @@ export default class ForcedChoiceMeasurement extends React.Component {
     super(props);
 
     this.state = {
-      finished: false,
-      seconds: this.maxHz
+      choice1: 250,   // frequency in Hz * 10
+      choice2: 1000,
+      reveal: 0   // 0: only "show choice 1", 1: "show choice 1 and 2",
+                  // 2: "show choice 1 and 2" and "select choice 1",
+                  // 3: "show choice 1 and 2" and "select choice 2"
     };
   }
 
   componentDidMount() {
-    this.startRun();
   }
 
-  startRun() {
-    this.setState({seconds: this.maxHz});
-    this.setState({finished: false});
+  showChoice(choice) {
+    if (choice == 1) {
+      global.writeBeacon(this.state.choice1);
 
-    global.writeBeacon(0);
+      if (this.state.reveal == 0) {
+        this.setState({reveal: 1});
+      } else {
+        this.setState({reveal: 2});
+      }
+    } else if (choice == 2) {
+      global.writeBeacon(this.state.choice2);
+
+      this.setState({reveal: 3});
+    }
   }
 
-  stopRun() {
-    this.props.onStop(this.state.seconds/10);
+  stopRun(choice) {
+    if (choice == 1) {
+      this.props.onStop(this.state.choice1/10);
+    } else if (choice == 2) {
+      this.props.onStop(this.state.choice1/10);
+    }
     clearInterval(this.timer);
     global.writeBeacon(0);
   }
@@ -56,27 +71,6 @@ export default class ForcedChoiceMeasurement extends React.Component {
               marginRight: 5,
               height: '98%',
               flex: 1,
-              backgroundColor: '#DDDDDD',
-              opacity: 0
-            }}
-            contentStyle={{
-              width: '100%',
-              height: '100%',
-            }}
-            labelStyle={{
-              color: '#000000'
-            }}
-            onPress={() =>
-              this.stopRun()
-            }
-          >Show Choice 1</Button>
-          <Button
-            mode="contained"
-            style={{
-              marginLeft: 5,
-              marginRight: 5,
-              height: '98%',
-              flex: 1,
               backgroundColor: '#DDDDDD'
             }}
             contentStyle={{
@@ -87,7 +81,28 @@ export default class ForcedChoiceMeasurement extends React.Component {
               color: '#000000'
             }}
             onPress={() =>
-              this.stopRun()
+              this.showChoice(1)
+            }
+          >Show Choice 1</Button>
+          <Button
+            mode="contained"
+            style={{
+              marginLeft: 5,
+              marginRight: 5,
+              height: '98%',
+              flex: 1,
+              backgroundColor: '#DDDDDD',
+              opacity: this.state.reveal >= 1 ? 100 : 0
+            }}
+            contentStyle={{
+              width: '100%',
+              height: '100%',
+            }}
+            labelStyle={{
+              color: '#000000'
+            }}
+            onPress={() =>
+              this.showChoice(2)
             }
           >Show Choice 2</Button>
         </View>
@@ -102,13 +117,13 @@ export default class ForcedChoiceMeasurement extends React.Component {
           }}>
           <Button
             mode="contained"
-            disabled="true"
             style={{
               marginLeft: 5,
               marginRight: 5,
               height: '98%',
               flex: 1,
-              backgroundColor: '#DDDDDD'
+              backgroundColor: '#DDDDDD',
+              opacity: this.state.reveal == 2 ? 100 : 0
             }}
             contentStyle={{
               width: '100%',
@@ -118,18 +133,18 @@ export default class ForcedChoiceMeasurement extends React.Component {
               color: '#000000'
             }}
             onPress={() =>
-              this.stopRun()
+              this.stopRun(1)
             }
           >Select Choice 1</Button>
           <Button
             mode="contained"
-            disabled="true"
             style={{
               marginLeft: 5,
               marginRight: 5,
               height: '98%',
               flex: 1,
-              backgroundColor: '#DDDDDD'
+              backgroundColor: '#DDDDDD',
+              opacity: this.state.reveal == 3 ? 100 : 0
             }}
             contentStyle={{
               width: '100%',
@@ -139,7 +154,7 @@ export default class ForcedChoiceMeasurement extends React.Component {
               color: '#000000'
             }}
             onPress={() =>
-              this.stopRun()
+              this.stopRun(2)
             }
           >Select Choice 2</Button>
         </View>
