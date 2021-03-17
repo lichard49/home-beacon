@@ -151,7 +151,7 @@ export default class LoginScreen extends React.Component {
                 this.validateUserId();
                 this.setState({loading: true});
               }}
-            >Go to instructions</Button>
+            >Connect to device</Button>
           </View>
           <Portal>
             <Modal
