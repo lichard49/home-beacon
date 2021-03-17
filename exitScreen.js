@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { Portal, Dialog, Paragraph, TextInput, Button, Text } from 'react-native-paper';
 
 import styles from './styles.js';
 
@@ -10,6 +10,7 @@ export default class ExitScreen extends React.Component {
     super(props);
     this.state = {
       loading: false,
+      finished: false,
       answer: '',
       cff: 0
     };
@@ -72,13 +73,27 @@ export default class ExitScreen extends React.Component {
                 fetch('https://homes.cs.washington.edu/~lichard/beacon/log/?user=' + global.user + '&data=' + payload)
                   .then((response) => response.text())
                   .then(() => {
-                    this.setState({loading: false});
-                    // quit
+                    this.setState({
+                      loading: false,
+                      finished: true
+                    });
                   });
                 this.setState({loading: true});
               }}
             >Upload Results</Button>
           </View>
+          <Portal>
+            <Dialog
+              visible={this.state.finished}
+              dismissable="false"
+              >
+              <Dialog.Title>Measurement Complete</Dialog.Title>
+              <Dialog.Content>
+                <Paragraph>Please close this app by swiping up on this app in
+                  the app switcher.</Paragraph>
+              </Dialog.Content>
+            </Dialog>
+          </Portal>
         </View>
       </TouchableWithoutFeedback>
     );
