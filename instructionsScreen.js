@@ -24,9 +24,12 @@ export default class InstructionsScreen extends React.Component {
     ];
 
     const FORCED_CHOICE_INSTRUCTIONS_TEXT = [
-      'When you start each run, press "Show choice 1" to start the Beacon device\'s light.\n',
-      'Then, press "Show choice 2" to see a different light pattern.\n',
-      'One option is a steady light, and the other is a flickering light. Decide which one appeared to flicker, and press the corresponding button.\n',
+      'Press "Show choice 1" to start the run.\n',
+      'Determine whether the light you are seeing is flickering or not.\n',
+      'Press "Show Choice 2" button to see the second option.\n',
+      'Determine whether the light you are seeing is flickering or not.\n',
+      'Only one of the two choices is flickering. If you would like, you can review each choice multiple times. Press the corresponding button to report which choice appeared flickering to you.\n',
+      'You will repeat steps 1 through 5 till you arrive at your threshold frequency.\n',
       'A measurement consists of ' + global.sessionSettings.numTrials + ' runs.\n'
     ];
 
