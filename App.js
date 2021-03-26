@@ -17,6 +17,9 @@ console.log('App starting!');
 
 const Stack = createStackNavigator();
 
+const BEACON_API_ROOT = 'https://homes.cs.washington.edu/~lichard/beacon/';
+const BEACON_API_LOG = BEACON_API_ROOT + 'log';
+
 global.TOTAL_NUM_TRIALS = 4;
 global.trialNum = 1;
 global.user = null;
@@ -72,6 +75,17 @@ global.bytesToBase64 = function (bytes) {
     result += "=";
   }
   return result;
+}
+
+global.writeLog = function (message, isFinal, callback) {
+  const payload = JSON.stringify({
+    time: Date.now(),
+    isFinal: isFinal,
+    message: message
+  });
+  fetch(BEACON_API_LOG + '/?user=' + global.sessionSettings.userId + '&data=' + payload)
+    .then((response) => response.text())
+    .then(callback);
 }
 
 global.sessionSettings = {

@@ -65,19 +65,15 @@ export default class ExitScreen extends React.Component {
               style={[styles.textBody]}
               loading={this.state.loading}
               onPress={() => {
-                const payload = JSON.stringify({
-                  time: Date.now(),
-                  question3: this.state.answer,
-                  runs: global.runs
+                writeLog({
+                  runs: global.runs,
+                  question3: this.state.answer
+                }, true, function() {
+                  this.setState({
+                    loading: false,
+                    finished: true
+                  })
                 });
-                fetch('https://homes.cs.washington.edu/~lichard/beacon/log/?user=' + global.user + '&data=' + payload)
-                  .then((response) => response.text())
-                  .then(() => {
-                    this.setState({
-                      loading: false,
-                      finished: true
-                    });
-                  });
                 this.setState({loading: true});
               }}
             >Upload Results</Button>
