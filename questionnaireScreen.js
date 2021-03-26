@@ -119,18 +119,16 @@ export default class QuestionnaireScreen extends React.Component {
                 style={[styles.textBody]}
                 loading={this.state.loading}
                 onPress={() => {
-                  const payload = JSON.stringify({
+                  writeLog('questionnaire', {
                     time: Date.now(),
                     question1: this.state.question1Selection,
                     question1Explanation: this.state.answer,
                     question2: this.state.question2Selection
+                  }, () => {
+                    this.setState({loading: false});
+                    this.props.navigation.navigate('Exit');
                   });
-                  fetch('https://homes.cs.washington.edu/~lichard/beacon/log/?user=' + global.user + '&data=' + payload)
-                    .then((response) => response.text())
-                    .then(() => {
-                      this.setState({loading: false});
-                      this.props.navigation.navigate('Exit');
-                    });
+
                   this.setState({loading: true});
                 }}
               >Submit</Button>

@@ -65,14 +65,14 @@ export default class ExitScreen extends React.Component {
               style={[styles.textBody]}
               loading={this.state.loading}
               onPress={() => {
-                writeLog({
+                writeLog('exit', {
                   runs: global.runs,
                   question3: this.state.answer
-                }, true, () => {
+                }, () => {
                   this.setState({
                     loading: false,
                     finished: true
-                  })
+                  });
                 });
                 this.setState({loading: true});
               }}

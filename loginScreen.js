@@ -92,20 +92,21 @@ export default class LoginScreen extends React.Component {
   }
 
   nextScreen() {
-    this.setState({loading: false});
-    this.props.navigation.navigate('Connect');
+    writeLog('login', global.sessionSettings, () => {
+      this.setState({loading: false});
+      this.props.navigation.navigate('Connect');
+    });
   }
 
   populateSessionSettings(userId, deviceId, numTrials, protocol,
-    protocolSettings) {
+    protocolSettings, originalConfig=null) {
 
     global.sessionSettings.userId = userId;
     global.sessionSettings.deviceId = deviceId;
     global.sessionSettings.numTrials = numTrials;
     global.sessionSettings.protocol = protocol;
     global.sessionSettings.protocolSettings = protocolSettings;
-
-    console.log('session settings', global.sessionSettings);
+    global.sessionSettings.originalConfig = originalConfig;
   }
 
   render() {

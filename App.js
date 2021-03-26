@@ -77,12 +77,13 @@ global.bytesToBase64 = function (bytes) {
   return result;
 }
 
-global.writeLog = function (message, isFinal, callback) {
+global.writeLog = function (screen, message, callback) {
   const payload = JSON.stringify({
     time: Date.now(),
-    isFinal: isFinal,
+    screen: screen,
     message: message
   });
+  console.log('[' + screen + '] ' + payload);
   fetch(BEACON_API_LOG + '/?user=' + global.sessionSettings.userId + '&data=' + payload)
     .then((response) => response.text())
     .then(callback);

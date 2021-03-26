@@ -40,12 +40,15 @@ export default class MeasurementScreen extends React.Component {
   }
 
   saveRun(valid) {
-    global.runs.push({
+    let savePayload = {
       frequency: this.state.finalFrequency,
       optionalData: this.state.optionalData,
       valid: valid
+    };
+
+    writeLog('measurement', savePayload, () => {
+      global.runs.push(savePayload);
     });
-    console.log(global.runs);
   }
 
   render() {

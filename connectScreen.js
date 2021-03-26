@@ -32,29 +32,27 @@ export default class HomeScreen extends React.Component {
       // or other criteria.
       if (device.name === global.sessionSettings.deviceId) {
 
-          // Stop scanning as it's not necessary if you are scanning for one device.
-          global.manager.stopDeviceScan();
+        // Stop scanning as it's not necessary if you are scanning for one device.
+        global.manager.stopDeviceScan();
 
-          // Proceed with connection.
-          device.connect()
-            .then((device) => {
-              return device.discoverAllServicesAndCharacteristics()
-            })
-            .then((device) => {
-              // Do work on device with services and characteristics
-              console.log('connected! writing...');
+        // Proceed with connection.
+        device.connect()
+          .then((device) => {
+            return device.discoverAllServicesAndCharacteristics()
+          })
+          .then((device) => {
+            // Do work on device with services and characteristics
+            global.device = device;
+            global.writeBeacon(0);
 
-              global.device = device;
-              global.writeBeacon(0);
-
-              console.log('done');
-
+            writeLog('connect', { device: device.name }, () => {
               this.nextPage();
-            })
-            .catch((error) => {
-              // Handle errors
-              console.log(error);
             });
+          })
+          .catch((error) => {
+            // Handle errors
+            console.log(error);
+          });
       }
     });
   }
