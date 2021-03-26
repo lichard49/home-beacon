@@ -68,7 +68,7 @@ export default class ExitScreen extends React.Component {
                 writeLog({
                   runs: global.runs,
                   question3: this.state.answer
-                }, true, function() {
+                }, true, () => {
                   this.setState({
                     loading: false,
                     finished: true
