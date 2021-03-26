@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, View } from 'react-native';
+import { ScrollView, FlatList, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import styles from './styles.js';
@@ -41,7 +41,7 @@ export default class InstructionsScreen extends React.Component {
     }
 
     return (
-      <View style={[styles.contentRoot]}>
+      <ScrollView style={[styles.contentRoot]}>
         <View style={[styles.contentRow]}>
           <Text style={[styles.textSubtitle]}>
             Instructions
@@ -64,7 +64,7 @@ export default class InstructionsScreen extends React.Component {
             }
           >{'Start run 1 of ' + global.sessionSettings.numTrials}</Button>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
