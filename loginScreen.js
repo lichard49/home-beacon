@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
+import { Linking, TouchableWithoutFeedback, Keyboard, View } from 'react-native';
 import { Portal, Modal, Text, TextInput, Button } from 'react-native-paper';
 
 import styles from './styles.js';
@@ -113,7 +113,7 @@ export default class LoginScreen extends React.Component {
 
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={[styles.contentRoot]}>
+        <View style={[styles.contentRoot], {flex: 1, padding: 20}}>
           <View style={[styles.contentRow, styles.contentCenter]}>
             <Text style={[styles.textTitle]}>
               Beacon
@@ -153,6 +153,27 @@ export default class LoginScreen extends React.Component {
                 this.setState({loading: true});
               }}
             >Connect to device</Button>
+          </View>
+          <View style={[styles.contentRow], {
+            flex: 1,
+            justifyContent: 'flex-end',
+            marginBottom: 20
+            }}>
+            <Text style={{fontSize: 15}}>
+              This app should only be used as part of a research study run by the University of Washington.
+              The measurements provided by this app should not be considered a medical diagnosis.
+              In case of emergency, contact a physician or healthcare provider.
+              More information on the protocol used by this app can be found in this{' '}
+              <Text
+                style={{color: 'blue'}}
+                onPress={() => {
+                  Linking.openURL('https://homes.cs.washington.edu/~rkarkar/pubs/jour-imwut2018-beacon.pdf');
+                }}>
+
+                peer-reviewed study
+              </Text>
+              .
+            </Text>
           </View>
           <Portal>
             <Modal
