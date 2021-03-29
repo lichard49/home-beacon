@@ -37,7 +37,7 @@ export default class DescendingOnlyMeasurement extends React.Component {
   }
 
   stopRun() {
-    this.props.onStop(this.state.seconds/10);
+    this.props.onStop(this.state.seconds);
     clearInterval(this.timer);
 
     global.writeBeacon(0);

@@ -36,14 +36,16 @@ global.base64abc = [
 ];
 
 global.writeBeacon = function (value) {
+  let value10 = value * 10;
+  let data = new Uint8Array(2);
+  data[0] = (value10 >> 8) & 0xFF;
+  data[1] = value10 & 0xFF;
+  let formattedData = bytesToBase64(data);
+
+  console.log('[beacon] value:', value, ', value10:', value10,
+    ', raw data:', data, ', formatted data:', formattedData);
+
   if (global.sessionSettings.deviceId != null) {
-    let data = new Uint8Array(2);
-    data[0] = (value >> 8) & 0xFF;
-    data[1] = value & 0xFF;
-
-    console.log('raw data', data);
-    console.log('formatted data', bytesToBase64(data));
-
     global.manager.writeCharacteristicWithResponseForDevice(
       global.device.id,
       '6e400001-b5a3-f393-e0a9-e50e24dcca9e',

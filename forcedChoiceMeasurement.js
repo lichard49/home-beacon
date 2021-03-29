@@ -4,9 +4,9 @@ import { Button, Text } from 'react-native-paper';
 
 import styles from './styles.js';
 
-const NON_FLICKERING_FREQUENCY = 1200;   // frequency in Hz * 10
+const NON_FLICKERING_FREQUENCY = 120;   // frequency in Hz * 10
                                          // too fast to see
-const FREQUENCY_INCREMENT = 20;
+const FREQUENCY_INCREMENT = 2;
 const DIRECTION_UP = 1;
 const DIRECTION_DOWN = -1;
 
@@ -116,7 +116,7 @@ export default class ForcedChoiceMeasurement extends React.Component {
       averageFrequency /=
         global.sessionSettings.protocolSettings.numReversalsToUse;
 
-      this.props.onStop(averageFrequency/10, this.selectedFrequencies);
+      this.props.onStop(averageFrequency, this.selectedFrequencies);
     } else {
       this.startRun();
     }

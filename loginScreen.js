@@ -12,8 +12,8 @@ const OFFLINE_DEV_DEVICE_ID = null;
 const OFFLINE_DEV_PROTOCOL = 'forced_choice';
 const OFFLINE_DEV_NUM_TRIALS = 2;
 const OFFLINE_DEV_PROTOCOL_SETTINGS = {
-  frequencyStart: 550,   // frequency in Hz * 10
-  frequencyStop: 250,   // frequency in Hz * 10
+  frequencyStart: 55,   // frequency in Hz * 10
+  frequencyStop: 25,   // frequency in Hz * 10
   frequencyStep: 0.5   // frequency step in Hz/100 ms
 };
 
