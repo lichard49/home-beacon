@@ -207,9 +207,11 @@ export default class ForcedChoiceMeasurement extends React.Component {
             labelStyle={{
               color: '#000000'
             }}
-            onPress={() =>
-              this.stopRun(1)
-            }
+            onPress={() => {
+              if (this.state.reveal == 2) {
+                this.stopRun(1);
+              }
+            }}
           >Select Choice 1</Button>
           <Button
             mode="contained"
@@ -228,9 +230,11 @@ export default class ForcedChoiceMeasurement extends React.Component {
             labelStyle={{
               color: '#000000'
             }}
-            onPress={() =>
-              this.stopRun(2)
-            }
+            onPress={() => {
+              if (this.state.reveal == 3) {
+                this.stopRun(2);
+              }
+            }}
           >Select Choice 2</Button>
         </View>
       </View>
