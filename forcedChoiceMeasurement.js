@@ -116,7 +116,7 @@ export default class ForcedChoiceMeasurement extends React.Component {
       averageFrequency /=
         global.sessionSettings.protocolSettings.numReversalsToUse;
 
-      this.props.onStop(averageFrequency, this.selectedFrequencies);
+      this.props.onStop(averageFrequency.toFixed(2), this.selectedFrequencies);
     } else {
       this.startRun();
     }
