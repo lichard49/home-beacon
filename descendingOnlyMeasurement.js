@@ -24,7 +24,9 @@ export default class DescendingOnlyMeasurement extends React.Component {
     global.writeBeacon(0);
 
     this.timer = setInterval(() => {
-      if (this.state.seconds == global.sessionSettings.protocolSettings.frequencyStop) {
+      this.setState({seconds: Math.round(this.state.seconds * 100)/100.0});
+
+      if (this.state.seconds <= global.sessionSettings.protocolSettings.frequencyStop) {
         this.stopRun();
       } else {
         // Bluetooth send this.state.seconds to device
