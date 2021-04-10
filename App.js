@@ -94,6 +94,7 @@ global.writeLog = function (screen, message, callback) {
 global.sessionSettings = {
   userId: null,
   deviceId: null,
+  isClinic: null,
   numTrials: null,
   protocol: null,
   protocolSettings: {}

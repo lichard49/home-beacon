@@ -33,8 +33,14 @@ export default class InstructionsScreen extends React.Component {
       'A measurement consists of ' + global.sessionSettings.numTrials + ' runs.\n'
     ];
 
+    const CLINIC_INSTRUCTIONS_TEXT = [
+      'Consult with the study coordinator on how to use this app.\n'
+    ];
+
     let instructionsText = '';
-    if (global.sessionSettings.protocol == 'descending_only') {
+    if (global.sessionSettings.isClinic) {
+      instructionsText = CLINIC_INSTRUCTIONS_TEXT;
+    } else if (global.sessionSettings.protocol == 'descending_only') {
       instructionsText = DESCENDING_ONLY_INSTRUCTIONS_TEXT;
     } else if (global.sessionSettings.protocol == 'forced_choice') {
       instructionsText = FORCED_CHOICE_INSTRUCTIONS_TEXT;
@@ -62,7 +68,9 @@ export default class InstructionsScreen extends React.Component {
             onPress={() =>
               this.props.navigation.navigate('Measurement')
             }
-          >{'Start run 1 of ' + global.sessionSettings.numTrials}</Button>
+          >{global.sessionSettings.isClinic ? 'Start' : 'Start run 1 of ' +
+            global.sessionSettings.numTrials
+          }</Button>
         </View>
       </ScrollView>
     );

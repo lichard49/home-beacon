@@ -64,7 +64,7 @@ export default class LoginScreen extends React.Component {
 
     if (userIdToTest === OFFLINE_DEV_USER_ID) {
       this.populateSessionSettings(OFFLINE_DEV_USER_ID, OFFLINE_DEV_DEVICE_ID,
-        OFFLINE_DEV_NUM_TRIALS, OFFLINE_DEV_PROTOCOL,
+        false, OFFLINE_DEV_NUM_TRIALS, OFFLINE_DEV_PROTOCOL,
         OFFLINE_DEV_PROTOCOL_SETTINGS);
       this.nextScreen();
     } else {
@@ -83,7 +83,7 @@ export default class LoginScreen extends React.Component {
           } else {
             let config = JSON.parse(text);
             this.populateSessionSettings(config.id,
-              config.device == false ? null : config.device,
+              config.device == false ? null : config.device, config.isClinic,
               config.numTrials, config.protocol, config.protocol_settings);
             this.nextScreen();
           }
@@ -98,11 +98,12 @@ export default class LoginScreen extends React.Component {
     });
   }
 
-  populateSessionSettings(userId, deviceId, numTrials, protocol,
+  populateSessionSettings(userId, deviceId, isClinic, numTrials, protocol,
     protocolSettings, originalConfig=null) {
 
     global.sessionSettings.userId = userId;
     global.sessionSettings.deviceId = deviceId;
+    global.sessionSettings.isClinic = isClinic;
     global.sessionSettings.numTrials = numTrials;
     global.sessionSettings.protocol = protocol;
     global.sessionSettings.protocolSettings = protocolSettings;
