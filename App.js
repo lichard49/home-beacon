@@ -91,6 +91,42 @@ global.writeLog = function (screen, message, callback) {
     .then(callback);
 }
 
+global.getApiEndpoint = function (endpoint, key=null, value=null) {
+  let apiEndpoint = BEACON_API_ROOT + endpoint + '/';
+
+  if (key != null) {
+    apiEndpoint += '?key=' + key;
+
+    if (value != null) {
+      apiEndpoint += '&value=' + value;
+    }
+  }
+
+  return apiEndpoint;
+}
+
+global.writeServer = function (endpoint, key, value) {
+  fetch(getApiEndpoint(endpoint, key, value));
+}
+
+global.readServer = function (endpoint, key, callback) {
+  fetch(getApiEndpoint(endpoint, key))
+    .then((response) => response.text())
+    .then((data) => {
+      callback(data);
+    });
+}
+
+global.pollServer = function (endpoint, key, callback) {
+  fetch(getApiEndpoint(endpoint, key))
+    .then((response) => response.text())
+    .then((data) => {
+      if (callback(data)) {
+        setTimeout(pollServer, 500, endpoint, key, callback);
+      }
+    });
+}
+
 global.sessionSettings = {
   userId: null,
   deviceId: null,
