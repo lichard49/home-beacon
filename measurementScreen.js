@@ -50,6 +50,14 @@ export default class MeasurementScreen extends React.Component {
       optionalData: optionalData
     });
 
+    let savePayload = {
+      frequency: finalFrequency,
+      optionalData: optionalData
+    };
+
+    writeLog('run', savePayload, () => {
+    });
+
     if (global.sessionSettings.isClinic) {
       writeServer('lock', 'status', '');
       readServer('lock', 'currentParticipant', (participantId) => {
