@@ -13,6 +13,9 @@ import MeasurementScreen from './measurementScreen.js';
 import QuestionnaireScreen from './questionnaireScreen.js';
 import ExitScreen from './exitScreen.js';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
+
 console.log('App starting!');
 
 const Stack = createStackNavigator();
