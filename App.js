@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { FlatList, TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { Appearance, FlatList, TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BleManager } from 'react-native-ble-plx';
@@ -139,17 +139,32 @@ global.sessionSettings = {
   protocolSettings: {}
 };
 
+// adapt colors based on system preferences (i.e. dark mode)
+let cardBackground = '#FFFFFF';
+let headerBackground = '#EFEFEF';
+let headerTextColor = '#000000';
+if (Appearance.getColorScheme() === 'light') {
+  // do nothing, keep defaults
+} else if (Appearance.getColorScheme() === 'dark') {
+  cardBackground = '#37474F';
+  headerBackground = '#222222';
+  headerTextColor = '#FFFFFF';
+}
+
 const HelloWorldApp = () => {
   return (
     <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{
           cardStyle: {
-            backgroundColor: '#FFFFFF'
+            backgroundColor: cardBackground
           },
           headerStyle: {
-            backgroundColor: '#FEFEFE'
-          }
+            backgroundColor: headerBackground
+          },
+          headerTitleStyle: {
+            color: headerTextColor
+          },
         }}>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Connect" component={ConnectScreen} />

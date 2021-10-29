@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  appRoot: {
-    backgroundColor: '#FFFFFF'
-  },
   contentRoot: {
     marginLeft: 20,
     marginRight: 20,
