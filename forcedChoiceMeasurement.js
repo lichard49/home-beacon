@@ -73,7 +73,10 @@ export default class ForcedChoiceMeasurement extends React.Component {
   stopRun(choice) {
     global.writeBeacon(0);
 
-    this.selectedFrequencies.push(this.currentFrequency);
+    this.selectedFrequencies.push({
+      time: Date.now(),
+      frequency: this.currentFrequency,
+    });
 
     if (choice == this.correctChoice) {
       this.numCorrect++;
