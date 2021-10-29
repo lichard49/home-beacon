@@ -85,8 +85,10 @@ export default class ExitScreen extends React.Component {
               >
               <Dialog.Title>Measurement Complete</Dialog.Title>
               <Dialog.Content>
-                <Paragraph>Please close this app by swiping up on this app in
-                  the app switcher.  Don't forget to turn off the device!</Paragraph>
+                <Paragraph>To end this session:</Paragraph>
+                <Paragraph>1. Turn off the Beacon device.</Paragraph>
+                <Paragraph>2. Close this app by swiping up on this app in
+                  the app switcher.</Paragraph>
               </Dialog.Content>
             </Dialog>
           </Portal>
