@@ -12,7 +12,7 @@ export default class HomeScreen extends React.Component {
     global.manager = new BleManager();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const subscription = global.manager.onStateChange((state) => {
       if (state === 'PoweredOn') {
         this.scanAndConnect();
@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
 
       // Check if it is a device you are looking for based on advertisement data
       // or other criteria.
-      if (device.name === global.sessionSettings.deviceId) {
+      if (device.localName === global.sessionSettings.deviceId) {
 
         // Stop scanning as it's not necessary if you are scanning for one device.
         global.manager.stopDeviceScan();
