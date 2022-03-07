@@ -14,7 +14,7 @@ target 'Beacon' do
 
 
   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
-
+  pod 'MultiplatformBleAdapter', :git => 'https://github.com/below/MultiPlatformBleAdapter', :tag => '0.1.9'
 
   target 'BeaconTests' do
     inherit! :complete
