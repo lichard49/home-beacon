@@ -1,4 +1,4 @@
-adb reverse tcp:8081 tcp:8081
+#adb reverse tcp:8081 tcp:8081
 npx react-native run-android --verbose
 
 # error: couldn't find DSO to load: libfbjni.so
